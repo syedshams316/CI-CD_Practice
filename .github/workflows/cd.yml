@@ -10,28 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Decode the Base64 private key and save it
-      - name: Decode SSH Key
-        run: echo "${{ secrets.SERVER_KEY }}" | base64 -d > /tmp/id_rsa
-        shell: bash
-
-      # Adjust permissions of the private key
-      - name: Set SSH Key Permissions
-        run: chmod 600 /tmp/id_rsa
-
-      # Deploy to the server
+      # Step 2: SSH into the server and deploy the application
       - name: Deploy to Server
-        uses: appleboy/ssh-action@v0.1.10
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key_path: /tmp/id_rsa
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
           port: 61001
           script: |
             docker stop fastapi-app || true
             docker rm fastapi-app || true
-            docker pull shams316/fastapi-app:ci-latest
+            docker pull shams316/my-fastapi-app:latest
             docker run -d --name fastapi-app -p 8000:8000 shams316/fastapi-app:ci-latest

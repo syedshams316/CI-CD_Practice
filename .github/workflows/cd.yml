@@ -25,5 +25,5 @@ jobs:
           script: |
             docker stop fastapi-app || true
             docker rm fastapi-app || true
-            docker pull shams316/my-fastapi-app:latest
+            docker pull shams316/fastapi-app:ci-latest
             docker run -d --name fastapi-app -p 8000:8000 shams316/fastapi-app:ci-latest

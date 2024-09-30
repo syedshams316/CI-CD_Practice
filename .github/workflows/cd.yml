@@ -20,8 +20,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_KEY }} # Base64-encoded private key
-          key_format: base64             # Decode Base64
+          key: ${{ secrets.SERVER_KEY }}  # Make sure this is your private key (Base64 encoded)
           port: 61001
           script: |
             docker stop fastapi-app || true
